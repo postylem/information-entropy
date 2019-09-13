@@ -1,0 +1,13 @@
+#!/bin/bash
+
+## copies all the entries in file ALLBIB that 
+## match project string to file BIBFILE.bib
+
+## MUST BE IN THE SAME DIRECTORY AS THE `information-entropy_readings` FOLDER
+
+cd -- "$(dirname "$BASH_SOURCE")"
+
+ALLBIB=~/all.bib #master bibfile name
+BIBFILE=information-entropy.bib # project bibfile name
+
+bibtool -- 'select.by.string {project "information-entropy"}' $ALLBIB > ${BIBFILE}
