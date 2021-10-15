@@ -1,0 +1,55 @@
+\documentclass[11pt]{article}
+
+\usepackage[no-math]{fontspec} % use [no-math] option if there's a problem with math fonts
+\defaultfontfeatures{Mapping=tex-text,Scale=MatchLowercase}
+\setmainfont{Linux Libertine}
+\setsansfont{Linux Biolinum}
+\setmonofont{Consolas}
+
+\usepackage[round]{natbib}
+
+\usepackage[yyyymmdd]{datetime}
+\renewcommand{\dateseparator}{-}
+\usepackage{amsmath,amssymb,amsthm,enumitem,hyperref,booktabs,xcolor,semantic,todo}
+\usepackage{multicol}\setlength\columnsep{-15pt}
+\usepackage[normalem]{ulem}
+\newcommand{\sff}[1]{{\sffamily #1}}
+\usepackage{graphicx}
+\usepackage[margin=0.75in,headheight=15pt]{geometry}
+\usepackage{fancyhdr}
+
+%============== Metadata to edit: ==================
+\pagestyle{fancy}
+\newcommand\TITLE{} % <------------- Title
+\newcommand\LNAME{\scshape hoover}
+\newcommand\FNAME{\scshape jacob louis}
+\lhead{\today }
+\chead{\textbf{\TITLE}}
+\rhead{\LNAME\ \thepage}
+\cfoot{}
+\title{\TITLE: \\from something to nothing}
+\author{\FNAME\ \LNAME\\\today}
+\date{} % for no date
+\usepackage{gb4e}
+\renewcommand{\eachwordone}\textit{}
+\renewcommand{\eachwordtwo}{\sffamily}
+%=%=%=%=%=%=%=%=%=%=%=%=%=%=%=%=%=%=%=%=%=%=%=%=%
+%
+%=%=%=%=%=%=%=%=%=%=%=%= BEGIN DOCUMENT %=%=%=%=%
+%
+%=%=%=%=%=%=%=%=%=%=%=%=%=%=%=%=%=%=%=%=%=%=%=%=%
+
+\begin{document}
+\thispagestyle{empty}
+% \maketitle
+Sequential information source $P$ is a probability distribution over space of infinite sequences $P:\{0,1\}^\infty\to [0,1]$.
+
+It is characterized by a sequence of probability mass functions $(f^{(1)},f^{(2)},...)$ where $f^{(n)}$ is a probability mass function on $\{0,1\}^n$ that denotes the marginal distribution of P on the first n-bit segments ($f^{(n)}:\{0,1\}^n\to [0,1]$). So for instance
+
+\[f^{(3)}((1,0,1))=\sum_{\{x \text{ with prefix }1,0,1\}} P(x)\]
+
+
+% \nocite{*}
+% \bibliographystyle{plainnat}
+% \begin{small}\bibliography{BIBNAME_HERE!}\end{small}
+\end{document}
