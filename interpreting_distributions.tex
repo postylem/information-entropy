@@ -1,0 +1,102 @@
+%!TEX program = xelatex
+\documentclass{article}
+
+\usepackage{amsfonts,amssymb,amsthm}
+\usepackage{enumitem,booktabs}
+\usepackage[margin=1in]{geometry}
+\usepackage{parskip}
+\usepackage{fontspec}
+\setmainfont{Linux Libertine}
+
+\usepackage[%
+natbib=true,backend=biber,sorting=nymdt,%
+citestyle=authoryear,bibstyle=authoryear,%
+url=false,doi=false,isbn=false%
+]{biblatex}
+\addbibresource{/Users/j/Library/texmf/bibtex/bib/all.bib}
+
+% jbib_links: makes nice links, and defines nymdt sorting.
+%   Imports mathtools, xcolor, hyperref, cleveref.
+\input{/Users/j/Library/texmf/custom/jbib_links.tex}
+
+% jformat: general formatting things.
+%   Imports packages contour, ulem
+\input{/Users/j/Library/texmf/custom/jformat.tex}
+
+% kast: a nice box environment:
+\input{/Users/j/Library/texmf/custom/kast.tex}
+
+% IT operators: for expectation \E{}, entropy \H{}, MI \I{} etc.
+%\input{/Users/j/Library/texmf/custom/information-theory-operators.tex}
+
+\newtheorem*{theorem}{Theorem}
+\theoremstyle{definition}
+\newtheorem*{definition}{Definition}
+\newcommand\key[1]{\myuline{#1}}
+%\usepackage{gb4e}\noautomath% removes incompatibilities
+\begin{document}
+
+\title{Binomial to Gamma}
+\author{}%\author{Jacob Louis Hoover}
+\date{}
+
+\maketitle
+\begin{kast}{Binomial}
+\begin{equation}
+S \sim \mathrm{Binomial}(n,p)
+\end{equation}
+Interpretation: $S\in \{0,\ldots,n\}$ is the number of successes in $n$ repeated trials,
+each with probability $p$ of success.
+\begin{itemize}
+  \item If $n=1$, it is called $\mathrm{Bernoulli}(p)$.
+\end{itemize}
+\end{kast}
+
+If we think of the $n$ trials happening in a fixed period of time, and divide
+the period infinitesimally, so instead of $n,p$, we have a \key{rate},
+$\lambda$, the expected number of successes, we get the Poisson.
+
+\begin{kast}{Poisson}
+  \begin{equation}
+    S \sim \mathrm{Poisson}(\lambda)
+  \end{equation}
+  Interpretation: $S\in\{1,\ldots,\infty\}$ is the number of successes in a
+  fixed period, given constant rate $\lambda$.
+\end{kast}
+
+If instead of being interested in the \emph{number} of successes, we're
+interested in the \emph{time between successes}, we get the Exponential
+distribution (or more generally, the Gamma distribution).
+
+\begin{kast}{Exponential}
+  \begin{equation}
+    S \sim \mathrm{Exponential}(\lambda)
+  \end{equation}
+  Interpretation: $S\in \mathbb{R} \ge 0$ is the time to wait before the first
+  success in a Poisson process with rate $\lambda$.
+  \begin{itemize}
+    \item sometimes parametrized in terms of the mean $\frac{1}{\lambda}$ (units
+      of time), rather than rate $\lambda$ (units inverse time).
+    \item if rate is not constant, but is proportional a power of time, see
+      Weibull distribution (common for time-to-failure interpretation).
+  \end{itemize}
+\end{kast}
+
+\begin{kast}{Gamma}
+  \begin{equation}
+    S \sim \mathrm{Gamma}(k,\lambda)
+  \end{equation}
+  Interpretation: $S\in \mathbb{R} \ge 0$ is the time it takes to have $k$
+  successes in a Poisson process with rate $\lambda$. 
+
+  The `shape' parameter $k$ can be any positive real.
+  \begin{itemize}
+    \item if $k$ is restricted to be an integer, then it is called
+      $\mathrm{Erlang}(k,\lambda)$.
+    \item if $k=1$, it's $\mathrm{Exponential}(\lambda)$.
+  \end{itemize}
+\end{kast}
+
+\nocite{leemis.l:2008,crooks.g:2019}
+\printbibliography[title=References]{}
+\end{document}
