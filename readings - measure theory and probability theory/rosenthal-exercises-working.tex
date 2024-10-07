@@ -1,0 +1,107 @@
+%!TEX program = xelatex
+\documentclass[]{scrartcl}
+\usepackage{amsmath,amsfonts,amssymb,mathtools}
+\usepackage{enumitem,booktabs}
+\setlist[enumerate]{label=\normalfont\bfseries(\alph*)}
+\usepackage[margin=1in]{geometry}
+\usepackage[no-math]{fontspec}
+\setmainfont{Palatino}
+\setsansfont{Palatino}
+\usepackage[%
+natbib=true,backend=biber,sorting=nymdt,%
+citestyle=authoryear,bibstyle=authoryear,%
+url=false,doi=false,isbn=false%
+]{biblatex}
+\addbibresource{/Users/j/Library/texmf/bibtex/bib/all-biblatex.bib}
+% import xcolor, imports and configs hyperref, defines nymdt sorting:
+\input{/Users/j/Library/texmf/custom/jbib_links.tex}
+\input{/Users/j/Library/texmf/custom/kast.tex}
+\usepackage{cleveref} % must come after importing hyperref
+\input{/Users/j/Library/texmf/custom/jformat.tex} % general formatting things
+\input{/Users/j/Library/texmf/custom/information-theory-operators.tex}
+
+\usepackage[amsthm]{ntheorem}
+% \theoremstyle{plain}%default
+\newtheorem*{theorem}{Theorem}
+\theoremstyle{break}
+\newtheorem*{exercise}{Exercise}
+
+\theoremstyle{definition}
+\newtheorem*{definition}{Def}
+\newtheorem{exmp}{Example}[section]
+
+\theoremstyle{break}\theorembodyfont{\normalfont}\theoremheaderfont{\itshape}
+\newtheorem*{solution}{Solution}
+
+\newcommand\key\myuline%
+\renewcommand\right\mright%
+\renewcommand\left\mleft%
+
+\begin{document}
+
+\title{Solutions to Odd-numbered Exercises}
+\subtitle{of \citetitle{rosenthal.j:2006} \citep{rosenthal.j:2006}}
+\author{Jacob Louis Hoover}
+\date{}
+
+\maketitle
+
+\section*{Chapter 2: Probability Triples}
+
+\begin{exercise}[2.2.3]
+  Prove that the collection
+  \(\mathcal{J}=\{\text{all intervals contained in }[0,1]\}\)
+  is a \emph{semialgebra} of subsets of $\Omega$, meaning that it contains
+  $\emptyset$ and $\Omega$, it is closed under finite intersection, and the
+  complement of any element of $\mathcal{J}$ is equal to a finite disjoint
+  union of elements of $\mathcal{J}$.
+  \begin{solution}
+  Show it obeys the requirements
+    \begin{itemize}[noitemsep]
+      \item by definition $\mathcal{J}$ contains $\emptyset$ and $\Omega$
+      \item the intersection of any finite number of intervals is an interval
+      \item complement of any interval can be made by taking the union of disjoint
+        intervals (only at most two are needed: before and after).
+    \end{itemize}
+  \end{solution}
+\end{exercise}
+
+\begin{exercise}[2.2.5]
+  \begin{enumerate}
+    \item Prove that $\mathcal{B}_0 = \{\text{all finite unions of elements of }
+      \mathcal{J}\}$ is an \emph{algebra} (or \emph{field}) of subsets of
+      $\Omega$, meaning that it contains $\Omega$ and $\emptyset$, and is closed
+      under formation of complements and of \emph{finite} unions and
+      intersections.
+    \item Prove thet $\mathcal{B}_0$ is \myuline{not} a $\sigma$-algebra.
+  \end{enumerate}
+
+  \begin{solution}
+    \begin{enumerate}
+      \item
+      \begin{itemize}
+        \item by definition $\mathcal{B}_0$ it contains $\emptyset$ and $\Omega$
+        \item it is closed under formation of complements because the complement
+          of any element of $\mathcal{J}$ is a finite disjoint union of elements
+          of $\mathcal{J}$, which is in $\mathcal{B}_0$ by definition
+        \item likewise it is closed under finite unions, since any finite union
+          of elements of $\mathcal{B}_0$ is a finite union of elements of
+          $\mathcal{J}$.
+        \item for any finite set $\{A_i\}_i$ of elements of $\mathcal{B}_0$,
+          the intersection $\bigcap A_i= {(\bigcup A_i^c)}^c \in\mathcal{B}_0$ 
+          by closure under complements and finite unions.
+      \end{itemize}
+    \item Assume $\mathcal{B}$ is a $\sigma$-algebra. Then it is closed under 
+      formation of countable unions. Take the set
+      $N=\bigcup_{n\in\mathbb{N}}(\frac{1}{2^{n+1}},\frac{1}{2^n})$, which
+      is a countable union of intervals in $[0,1]$, so it is in $\mathcal{B}$.
+      However, the set $N$ consists of an infinite number of disjoint intervals,
+      so it cannot be constructed from finite union of intervals,
+      thus is not in $\mathcal{B}_0$. Contradiction.
+    \end{enumerate}
+  \end{solution}
+\end{exercise}
+
+
+\printbibliography[title=References]{}
+\end{document}
