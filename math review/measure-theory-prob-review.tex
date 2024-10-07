@@ -1,0 +1,374 @@
+%!TEX program = xelatex
+\documentclass[a4paper]{article}
+\usepackage{amsmath,amsfonts,amssymb,amsthm,mathtools}
+\usepackage{enumitem,booktabs}
+\usepackage{parskip}
+\usepackage[margin=0.25in]{geometry}
+\usepackage[no-math]{fontspec}
+\setmainfont{Linux Libertine}
+\usepackage[%
+natbib=true,backend=biber,sorting=nymdt,%
+citestyle=authoryear,bibstyle=authoryear,%
+url=false,doi=false,isbn=false%
+]{biblatex}
+\addbibresource{/Users/j/Library/texmf/bibtex/bib/all.bib}
+% import xcolor, imports and configs hyperref, defines nymdt sorting:
+\input{/Users/j/Library/texmf/custom/jbib_links.tex}
+\input{/Users/j/Library/texmf/custom/kast.tex}
+\usepackage{cleveref} % must come after importing hyperref
+\input{/Users/j/Library/texmf/custom/jformat.tex} % general formatting things
+\input{/Users/j/Library/texmf/custom/information-theory-operators.tex}
+\newtheorem*{theorem}{Theorem}
+\theoremstyle{definition}
+\newtheorem*{definition}{Def}
+\newtheorem*{example}{Example}
+
+\newcommand\gray[1]{{\color{gray}#1}}
+
+\newcommand\key\uline%
+\renewcommand\right\mright%
+\renewcommand\left\mleft%
+
+\begin{document}
+
+\title{Math review for probability theory}
+\author{Jacob Louis Hoover}
+\date{}
+
+%\maketitle
+
+\section*{Basic measure theory definitions}%
+\label{sec:measure_theory}
+\nocite{billingsley.p:1995, lanchier.n:2017ch1}
+
+\begin{definition}
+  Given a set $\Omega$, a \key{$\sigma$-algebra} (or \key{$\sigma$-field})
+  $\mathcal{F}$ on $\Omega$ is a collection of subsets of $\Omega$  such that
+  that contains $\Omega$, is closed under complementation and is closed under
+  countable unions (that is, $A^c\in \mathcal{F}$ for any $A\subseteq
+  \mathcal{F}$ and $\bigcup_n A_n \in \mathcal{F}$ for any set
+  ${\{A_n\}}_{n\in\mathbb{N}}$ of elements in $\mathbb{F}$). It follows that
+  $\mathcal{F}$ is closed under countable intersections, and contains the empty
+  set. Elements of a $\mathcal F$ are called \key{measurable sets}.
+\end{definition}
+
+\begin{definition}
+  A \key{measurable space} (or \key{Borel space}) is a tuple $(\Omega,
+  \mathcal{F})$, where $\Omega$ is a set and $\mathcal{F}$ a $\sigma$-algebra on
+  $\Omega$.
+\end{definition}
+
+\begin{definition}
+  A \key{measure} on a measurable space $(\Omega,\mathcal{F})$ is a map
+  $\mu:\mathcal{F}\to [0,\infty]$, where $\mu(\emptyset) = 0$, and
+  \(\mu\left(\bigsqcup_{n}A_n\right)=\sum_{n}\mu(A_n)\)
+  for ${\{A_n\}}_{n\in \mathbb{N}}$ a countable collection of pairwise disjoint
+  sets in $\mathcal{F}$. This last property is called countable additivity (or
+  $\sigma$-additivity). A \key{probability measure} is a measure with total
+  measure $\mu(\Omega)=1$.
+\end{definition}
+
+\begin{definition}
+  A \key{measure space} is a triple $(\Omega,\mathcal{F},\mu)$, where $\mu$ is a
+  measure on measurable space $(\Omega,\mathcal{F})$. A \key{probability space}
+  is measure space $(\Omega,\mathcal{F},p)$, where $p$ is a probability
+  measure, in which case $\Omega$ is called the \key{sample space}, and
+    its elements are called \key{outcomes}, and $\mathcal{F}$ is called the
+    \key{event space}, and its elements, the measurable sets, are called
+  \key{events}.
+\end{definition}
+
+\begin{definition}
+  An $(\mathcal{F},\mathcal{E})$-\key{measurable function} is a map $f:\Omega
+  \to E$, where $(\Omega,\mathcal{F}),(E,\mathcal{E})$ are two measurable
+  spaces, such that for every $B\in\mathcal{E}$,
+  $f^{-1}(B)\coloneqq\{\omega\in\Omega:f(\omega)\in B\}\in \mathcal{F}$.
+\end{definition}
+
+\begin{definition}
+  An $E$-valued \key{random variable} is an
+  $(\mathcal{F},\mathcal{E})$-measurable function $X:\Omega \to E$, where
+  $(\Omega,\mathcal{F},p)$ is a probability space (the ``underlying'' space),
+  and $(E,\mathcal{E})$ is a measurable space (sometimes called the ``sample
+  space'' ambiguously with $\Omega$). \gray{Often, $(E,\mathcal{E})$ is
+  $(\mathbb{R},\mathcal{B}(\mathbb{R}))$.}
+\end{definition}
+
+\begin{definition}
+  The \key{distribution} of (or \key{law} of, or
+  \key{measure induced} by) random variable $X$ is the
+  push-forward of the probability measure $p$ on $(\Omega,\mathcal{F})$ to
+  probability measure $p_X \coloneqq p \circ X^{-1}$ on $(E,\mathcal{E})$. That
+  is, for all $B\in\mathcal{E}$, the ``probability of $X$ taking on a value in
+  $B$'' is
+  \begin{equation*}
+    \text{``}p(X\in B)\text{''} \coloneqq p_X(B)
+    = p(X^{-1}(B)) =  p(\{\omega:X(\omega)\in B\})
+    \gray{
+      =\int_\Omega \mathbf{1}_{X^{-1}(B)}\dee{p}
+      =\int_E\mathbf{1}_B\dee{p\circ X^{-1}}
+      =\int_B\dee{p_X}
+    }
+  \end{equation*}
+  The distribution exists, since $X$ is a measurable function, so $X^{-1}( B ) \in
+  \mathcal{F}$ for all $B \in \mathcal{E}$.  Checking that $p_X(E)=1$, and is
+  countably additive, we see that the distribution is a probability measure on
+  $(E, \mathcal{E})$.
+
+  \gray{
+    In practice, the probability space induced by the random variable,
+    $(E,\mathcal{E},p_X)$, is what is used when working with random variable,
+    and the underlying probability space $(\Omega,\mathcal{F},p)$ is often not
+    even mentioned.
+  }
+\end{definition}
+
+\begin{definition}
+  Given measures $\mu, \nu$ on $(\Omega, \mathcal{F})$ say $\nu$ is
+  \key{absolutely continuous} with respect to $\mu$ (written $\nu \ll \mu$) iff
+  $\mu(A)=0\implies\nu(A)=0,\ \forall A\in \mathcal{F}$.
+\end{definition}
+
+\begin{definition}
+  If $p_X(C)=1$ for some countable set in $C \subseteq E$, then $X$ is called
+  \key{discrete}.
+
+  For real-valued random variable $X$, if $p_X\ll \lambda$
+  (that is, $p_X(X\in B)=0$ for all $B \in \mathcal E$ with Lebesgue
+  measure 0) then $X$ is called \key{continuous}.
+\end{definition}
+
+\begin{theorem}[Radon-Nikodým]
+  For any measures $\mu, \nu$ on $(\Omega, \mathcal{F})$ if $\nu \ll \mu$, there
+  exists a $(\mathcal{F}, \mathcal{B}(\mathbb{R}))$-measurable nonnegative
+  function $\rho:\Omega\to\mathbb{R}^{\ge0}$, such that $\nu(A) = \int_A
+  \rho\dee{\mu},\ \forall A\in \mathcal{F}$, which is uniquely defined
+  $\mu$-almost everywhere. This function is called the
+  \key{Radon-Nikodým derivative} of $\nu$ with respect to $\mu$, written  $\rho
+  = \frac{\dee{\nu}}{\dee{\mu}}$.
+\end{theorem}
+
+\begin{definition}
+  Given random variable $X$ with values in $(E,\mathcal{E})$, the
+  \key{density} of $X$ with respect to a reference measure $\mu$ on
+  $(E,\mathcal{E})$ is the Radon-Nikodým derivative
+  $\frac{\dee{p_X}}{\dee{\mu}}$, if such exists.
+  \gray{
+    Very often, the following (abuse of ?) notation is used: the symbol used for
+    the probability distribution of a random variable is also overloaded to also
+    mean the density with respect to a dominating measure (usually the Lebesgue
+    measure $\lambda$ when $E$ is the real numbers).
+    Also, this dominating measure is simply denoted $\dee{x}$, rather
+    than e.g.\ $\lambda(\dee{x})$.  So what might be written more formally as
+    $\int_S \frac{\dee{p_X}}{\dee{\lambda}} \dee{\lambda}$ or using a different
+    symbol $\rho_X$ for the density,
+    $\int_S \rho(x) \lambda(\dee{x})$
+    is written instead as instead as something like
+    $\int_S p_X(x) \dee{x}$.
+  }
+\end{definition}
+
+\gray{
+  \begin{definition}
+    For a real-valued random variable $X$ (where the observation space is
+    $(\mathbb{R},\mathcal{B}(\mathbb{R}))$, or a subset) we can also define the
+    \key{cumulative distribution function} $F_X(x) \coloneqq p(X\le x),\ \forall
+    x\in \mathbb{R}$. 
+
+    % Also, the \key{probability density function} of $X$ with
+    % respect to some reference measure $\mu$ on $E$ is defined as the RN
+    % derivative $f = \frac{dp_X}{d\mu}$, if possible.
+
+    Any real-valued random variable can be written as a sum of a discrete and a
+    continuous random variable.  The density is the \emph{convolution} of the
+    densities of the two random variables.
+  \end{definition}  
+}
+
+\noindent\hrulefill
+
+\begin{definition}[Lebesgue/abstract integral]
+  Given measure space $(\Omega,\mathcal{F},\mu)$ and function $X$,
+  write the integral of a function $X$ with respect to $\mu$ as
+  $\int X\dee{\mu}$ or $\int X(\omega)\mu(\dee\omega)$.
+
+  Assuming $X:\Omega \to \mathbb{R}$, this integral is defined as \citep[][section 1.2]{lanchier.n:2017ch1}
+  \begin{itemize}[nosep]
+    \item For a simple function (one with finite range):
+      $\int \sum a_i \mathbf{1}_{A_i} \dee{\mu} \coloneqq \sum a_i \mu(A_i)$.
+      %Note this is defined iff all the subsets $A_i\subset \Omega$ are measurable.
+    \item For a positive function $X:\Omega\to\mathbb{R}^+$:
+      since any positive measurable function can be
+      written as the pointwise limit of a nondecreasing sequence of functions in
+      $\mathcal{S}(\Omega,\mathcal{F}) \coloneqq$ the set of simple measurable
+      functions,%the horizontal slices in the intuitive picture of the lebesgue integral
+      $\int X \dee{\mu}
+      \coloneqq \sup_{s\in\mathcal{S}(\Omega,\mathcal{F})}\int s \dee{\mu}$.
+    \item Let $\int X\dee\mu 
+      \coloneqq \int_{X>0} X\dee\mu -\int_{X<0} -X\dee\mu$ for any
+      \key{integrable} function (defined as a function where both these terms
+      are finite).
+  \end{itemize}
+\end{definition}
+
+\begin{definition}
+  The \key{expectation} (or expected value) of a real-valued random variable
+  $X:\Omega\to \mathbb{R}$ (a measurable function from probability space
+  $(\Omega,\mathcal{F},p)$ to measurable space
+  $(\mathbb{R},\mathcal{B}(\mathbb{R}))$ is defined as $\E{X}=\E_p{X}\coloneqq
+  \int_\Omega X \dee{p}$.
+
+  Given measurable function $\phi:\mathbb{R}\to\mathbb{R}$,
+  then if $\phi$ is positive or integrable, 
+  $\E{\phi(X)}\coloneqq \int_\mathbb{R} \phi \dee{p_X}
+  \gray{
+    % = \int_\mathbb{R} \phi \dee{p\circ X^{-1}}
+    = \int_\Omega \phi\circ X \dee{p}
+  }$.
+\end{definition}
+
+By definition, if $X$ is a continuous random variable, $p_X\ll\lambda$, so by
+RN, it has a density $\rho_X=\frac{\dee{p_x}}{\dee{\lambda}}$, where for all
+$B\in\mathcal{B}(\mathbb{R})$, $\int_B \dee{p_X} = \int_B \rho_X \dee\lambda$.
+Call this the \key{pdf} of $X$.
+
+
+\section*{Kolmogorov Axioms}
+
+\begin{itemize}
+  \item[K1] The probability of event is a nonnegative real: 
+    $p(A) \in \mathbb{R}^{\ge 0},\ \forall A\in\mathcal{F}$
+  \item[K2] The probability that at least one elementary event in the sample
+    space occurs is 1: $p(\Omega) = 1$
+  \item[K3] $p$ is $\sigma$-additive
+    \(\mu\left(\bigsqcup_{n}A_n\right)=\sum_{n}\mu(A_n)\)
+    for ${\{A_n\}}_{n\in \mathbb{N}}$ a countable collection of pairwise
+    disjoint sets in $\mathcal{F}$
+\end{itemize}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section*{Laws of Large Numbers}%
+\label{sec:LLN}
+
+Let $X_1, X_2, \ldots, X_n$ be a sequence of random variables with identical
+finite expected value $\E{X_i} = m < \infty$, for all $i$.
+The laws of large numbers say that the \key{sample average}
+$\bar{X}_n\coloneqq\frac1n\sum_{i=1}^n X_i$ converges to $m$.
+
+\paragraph{The Weak LLN}
+
+(aka Khinchin's law) states that $\bar{X}_n \xrightarrow{\Pr} m$.
+That is, it \key{converges \emph{in probability}}:
+\begin{equation*}
+  \forall \, \epsilon>0, \lim_{n\to\infty}
+  p_{\bar{X}_n}\left( \left|\bar{X}_n - m \right| < \epsilon \right) = 1,
+  \quad\text{that is, }
+  \lim_{n\to\infty} p\left(\{\omega\in \Omega \mathrel{:}
+  \left|\bar{X}_n(\omega) - m \right| < \epsilon \}\right) = 1,
+\end{equation*}
+The weak law says that for large $n$, there is high probability
+that the sample average is arbitrarily close to $m$.  It is possible however
+that $|\bar{X}_n -m| \ge \epsilon$ for an infinitely often.
+The strong law says that this almost surely will not occur.
+
+\paragraph{The Strong LLN}
+
+(aka Kolmogorov's law) states that
+$\bar{X}_n\xrightarrow{\text{a.s.}} m$.
+That is, it \key{converges \emph{almost surely}}:
+\begin{equation*}
+  p_{\bar{X}_n}\left( \lim_{n\to\infty}\bar{X}_n = m \right) = 1
+  \qquad\text{that is, }
+  p\left(\{\omega\in\Omega\mathrel{:} \lim_{n\to\infty}\bar{X}_n(\omega) = m \}\right) = 1
+\end{equation*}
+
+Informally, the two laws can be summarized each as a statement about a sequence of
+estimates $\{Y_n\}_{n\in\mathbb Z}$, and some fixed value $m$:
+\begin{itemize}
+  \item \textbf{Weak:} In the limit of $n\to\infty$, [the probability that $Y_n$
+    is close to $m$] is one.
+  \item \textbf{Strong:} [The proposition that in the limit of $n\to\infty$,
+    $Y_n$ equals $m$], has probability one.
+\end{itemize}
+
+Both the strong and weak LLN hold in the case where the random variables are iid
+samples from the same underlying distribution, but there are other cases
+where the weak holds but the strong does not
+\citep[see][Example 5.4, p.71]{billingsley.p:1995}, or the example below.
+
+\begin{example}[weak LLN holds but strong does not]
+  Let $(\Omega, \mathcal{B}, p)$ be the
+  probability space defined on the unit interval $\Omega = [0,1]$ with Borel
+  sets $\mathcal{B}$ and Lebesgue measure $p$. 
+  Let $\{Y_n\}_{n\in\mathbb{N}}$ be a
+  set of real-valued (in fact, binary)
+  random variables where $Y_n\mathrel{:}\Omega\to \{1,0\}$ is
+  defined as
+  \begin{equation*}
+    Y_n(\omega) =
+    \begin{cases}
+      1 & \text{if }\omega\in A_n\\
+      0 & \text{else}
+    \end{cases},\text{ for }\omega\in\Omega
+  \end{equation*}
+  where $A_1 = [0,\frac{1}{2}], A_2 = [\frac{1}{2},1],  A_3 = [0,\frac{1}{4}],
+  A_4 = [\frac{1}{4},\frac{1}{2}], 
+  A_5 = [\frac{1}{2},\frac{3}{4}], A_6 = [\frac{3}{4}, 1], A_7 =
+  [0,\frac{1}{8}], \ldots$.
+  
+  So, $p_{Y_n}(1) = p(\{\omega\mathrel{:}Y_n(\omega) = 1\}) = p(A_n)$
+  (the probability of getting $1$ at step $n$ is the length of the
+  interval $A_n$). 
+
+  For the sequence $Y_n$:
+  \begin{itemize}
+    \item \textbf{the weak LLN holds}. That is, $Y_n \xrightarrow{\Pr} 0$.
+
+      As $n\to \infty$, the intervals become ever smaller, and $p_{Y_n}(1)
+      \to 0$ so $p_{Y_n}(0) \to 1$.  So, $p(\{\omega\mathrel{:} |Y_n(\omega) - 0| <
+      \epsilon\})\to 1$ and we have that the sequence $Y_n \xrightarrow{\Pr} 0$.
+      [Explicitly: we need to say this converges for all $\epsilon > 0$. 
+      Note first that for $\epsilon>1$ it is trivial: the set $\{\omega
+      \mathrel{:} |Y_n(\omega) - 0|<\epsilon\} = \Omega$, which has measure $1$
+      for all $n$.    Then note that for any $0<\epsilon<1$ the set $\{\omega
+        \mathrel{:} |Y_n(\omega) - 0|<\epsilon\} = \{\omega \mathrel{:} Y_n(\omega) =
+      0\} $, which has measure $1-p(A_n)$, which approaches $1$ as
+      $n\to\infty$.]
+
+    \item \textbf{the strong LLN does not hold}. That is, it is \emph{not} true
+      that $Y_n\xrightarrow{a.s.} 0$
+
+      In fact, for \emph{any} $\omega\in\Omega$, the sequence of $A_n$'s which
+      contain $\omega$ continue to occur infinitely often as $n$ grows.  So,
+      there is no set $W\subset \Omega$ such that $\lim Y_n(\omega)$ converges
+      at all. So, $p\left( \{\omega\mathrel{:}\lim_{n\to\infty}Y_n(\omega)=0
+      \}\right) = 0 \neq 1 $; the strong law fails catastrophically.
+  \end{itemize}
+\end{example}
+
+\begin{example}
+Some more similar examples:
+  \begin{itemize}
+    \item
+      For an example where the strong still law does not hold, but where $\exists
+      \omega \in \Omega$ such that $Y_n(\omega)$ converges, intersect each $A_n$
+      with the interval $[\frac{1}{3},\frac{2}{3}]$. Then the $p\left(
+      \{\omega\mathrel{:}\lim_{n\to\infty}Y_n(\omega)=0 \}\right) = \frac{1}{3} \neq
+      1$.
+    \item
+      For an example where the strong law does hold, set $A_n = [0,\frac{1}{n}]$ for
+      all $n$. Then $p(\{\omega \mathrel{:}\lim_{n\to\infty} Y_n(\omega)=0\}) =
+      p([0,1] \setminus \{0\}  ) = 1$.
+    \item
+      For another example where the strong law does hold, but where the set of
+      problematic points $\{\omega \mathrel{:}\lim_{n\to\infty} Y_n(\omega) \ne 0\}$ is infinite
+      (even, uncountable) take $A_n = C_n$, the $n$th set in the recursive
+      definition of the Cantor ternary set.  Since the Cantor set has measure zero,
+      the strong law still holds.
+  \end{itemize}
+\end{example}
+
+
+
+\nocite{lanchier.n:2017ch1}
+\printbibliography[title=References]{}
+\end{document}
